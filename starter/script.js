@@ -106,23 +106,55 @@ let passLength = 0
 
 // Function to prompt user for password options
 function getPasswordOptions() {
+  while (passLength < 8 || passLength > 128 || isNaN(passLength)) {
+    passLength = prompt("How long would you like the password to be? Atleast 8 characters but no more than 128")
+    if (passLength < 8 || passLength > 128 || isNaN(passLength)) {
+      alert("Please enter a number between 8 and 128");
+    }
+    if (confirm("Would you like upper case characters?")) {
+      selectedChars = selectedChars.concat(upperCasedCharacters);
+    }
+    if (confirm("Would you like lower case characters?")) {
+      selectedChars = selectedChars.concat(lowerCasedCharacters);
+    }
+    if (confirm("Would you like special characters?")) {
+      selectedChars = selectedChars.concat(specialCharacters);
+    }
+    if (confirm("Would you like any numbers in your password?")) {
+      selectedChars = selectedChars.concat(numericCharacters);
+    }
 
+    return selectedChars;
+
+  };
 }
 
 // Function for getting a random element from an array
 function getRandom() {
+  let password = "";
 
+  for (let i = 0; i < passLength; i++) {
+    let randomPass = Math.floor(Math.random() * selectedChars.length)
+    password = password + selectedChars[randomPass]
+  };
+
+  return password;
 };
 
 // Function to generate password with user input    
 function generatePassword() {
   console.log("button was clicked")
 
+  getPasswordOptions();
+
+  let password = getRandom()
+
+  return password;
 }
 
 
 // Get references to the #generate element
-var generateBtn = document.querySelector('#generate');
+let generateBtn = document.querySelector('#generate');
 
 // Write password to the #password input
 function writePassword() {
